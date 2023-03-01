@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path ,include
+from spotiview import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',views.IndexView.as_view(),name = 'index'),
     path('spotiview/',include('spotiview.urls')),
     path('accounts/', include('registration.backends.simple.urls')),
 ]
