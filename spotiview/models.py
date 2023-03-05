@@ -6,14 +6,14 @@ from django.template.defaultfilters import slugify
 
 class Track(models.Model):
     MAX_LENGHT = 200
-    TrackID = models.IntegerField(unique=True,primary_key=True)
-    SpotifyID = models.CharField(unique=True,max_length=300)
-    TrackName = models.CharField(max_length=MAX_LENGHT)
-    album = models.CharField(max_length=MAX_LENGHT)
-    artist = models.CharField(max_length=MAX_LENGHT)
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
-    listens = models.IntegerField(default=0)
+    TrackID = models.IntegerField(unique=True,primary_key=True,blank=True)
+    SpotifyID = models.CharField(max_length=300,blank=True)
+    TrackName = models.CharField(max_length=MAX_LENGHT,blank=True)
+    album = models.CharField(max_length=MAX_LENGHT,blank=True)
+    artist = models.CharField(max_length=MAX_LENGHT,blank=True)
+    likes = models.IntegerField(default=0,blank=True)
+    dislikes = models.IntegerField(default=0,blank=True)
+    listens = models.IntegerField(default=0,blank=True)
     slug = models.SlugField()
 
     class Meta:
@@ -23,7 +23,7 @@ class Track(models.Model):
         return self.TrackName + " by "  + self.artist
     
     def save(self,*args,**kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.TrackName)
         super(Track,self).save(*args,**kwargs)
     
 
@@ -40,10 +40,11 @@ class UserClass(models.Model):
 
 
 class Comment(models.Model):
+    MAX_LENGTH = 200
     TrackID = models.ForeignKey(Track, on_delete=models.CASCADE)
     UserID = models.ForeignKey(UserClass, on_delete=models.CASCADE)
     CommentID = models.IntegerField(unique=True,primary_key=True)
-    comment = models.CharField(max_length=200)
+    comment = models.CharField(max_length=MAX_LENGTH)
     DateTime = models.DateTimeField()
 
     class Meta:

@@ -133,3 +133,8 @@ LOGIN_URL = 'auth_login'
 LOGIN_REDIRECT_URL = 'spotiview:index'
 REGISTRATION_OPEN = True
 REGISTRATION_AUTO_LOGIN = True
+
+#Sporify API settings
+SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token"
+SPOTIFY_CLIENT_ID = "97dea558be7c4d648570dfcd2279a268"
+SPOTIFY_CLIENT_SECRET = "af96051334534e9e89d4c840eed8acd1"
