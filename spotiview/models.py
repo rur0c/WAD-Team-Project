@@ -6,11 +6,11 @@ from django.template.defaultfilters import slugify
 
 class Track(models.Model):
     MAX_LENGHT = 200
-    TrackID = models.IntegerField(unique=True,primary_key=True,blank=True)
-    SpotifyID = models.CharField(max_length=300,blank=True)
-    TrackName = models.CharField(max_length=MAX_LENGHT,blank=True)
-    album = models.CharField(max_length=MAX_LENGHT,blank=True)
-    artist = models.CharField(max_length=MAX_LENGHT,blank=True)
+    TrackID = models.IntegerField(unique=True,primary_key=True)
+    SpotifyID = models.CharField(max_length=300)
+    TrackName = models.CharField(max_length=MAX_LENGHT)
+    album = models.CharField(max_length=MAX_LENGHT)
+    artist = models.CharField(max_length=MAX_LENGHT)
     likes = models.IntegerField(default=0,blank=True)
     dislikes = models.IntegerField(default=0,blank=True)
     listens = models.IntegerField(default=0,blank=True)
