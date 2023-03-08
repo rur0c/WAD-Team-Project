@@ -22,7 +22,10 @@ class AboutView(View):
         
 class TopSongs(View):
         def get(self,request):
-            return render(request,'spotiview/topsongs.html')
+            context_dic = {}
+            top_tracks = Track.objects.all().order_by('-listens')[:7]
+            context_dic["tracks"] = top_tracks;
+            return render(request,'spotiview/topsongs.html',context=context_dic)
         
 
 class SpotifySearch():

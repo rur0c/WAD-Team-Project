@@ -2,11 +2,40 @@
 {% extends 'spotiview/base.html' %}
 {% load staticfiles %} 
 
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/topsongs.css' %}" type="text/css">
+{% endblock %}
+
+
+
 {% block title %}
     HomePage
 {% endblock %}
 
 
 {% block body %}
-    <h1><strong>Top Songs</strong></h1>
+
+
+    {% if  tracks %}
+        <div class="container">
+            <blockquote class="blockquote text-center">
+            <h1 class="mb-0"><strong>Top Songs</strong>
+            <footer class="blockquote-footer" id="header_footer"><small><em>Best of the Best</em></small></footer></blockquote>
+        
+
+        </div>
+
+
+
+
+
+
+
+    {% else %}
+
+
+    {% endif %}
+    
+
 {% endblock %}
