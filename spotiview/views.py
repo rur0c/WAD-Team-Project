@@ -5,9 +5,10 @@ import requests
 from base64 import b64encode
 from spotify_review_project import settings
 import json
-from spotiview.forms import UserForm,TrackForm,CommentForm
+from spotiview.forms import UserForm,TrackForm,CommentForm 
 from spotiview.models import UserClass,Track,Comment
 from django.core.exceptions import ObjectDoesNotExist
+
 
 # Create your views here.
 
@@ -91,7 +92,51 @@ class AddTrackView(View):
             print(form.errors)
         return render(request,'spotiview/add_track.html',{'form':form})
 
-          
+
+class LoginView(View):
+    def get(self,request):
+        return render(request,'registration/login.html')
+    def post(self,request):
+        username = request.POST['username']
+        password = request.POST['password']
+        try:
+            user = UserClass.objects.get(username=username)
+            if user.password == password:
+                request.session['user_id'] = user.UserID
+                return redirect(reverse('spotiview:index'))
+            else:
+                return redirect(reverse('register:login'))
+        except (ObjectDoesNotExist,UserClass.DoesNotExist) as error:
+            return redirect(reverse('register:login'))
+    
+
+class LogoutView(View):
+    def get(self,request):
+        try:
+            del request.session['user_id']
+        except KeyError:
+            pass
+        return redirect(reverse('spotiview:index'))
+    
+
+class RegisterView(View):
+    def get(self,request):
+        form = UserForm()
+        return render(request,'registration/register.html',{'form':form})
+    def post(self,request):
+        register_form = UserForm(request.POST)
+        if register_form.is_valid():
+            try:
+                user = register_form.save(commit=False)
+                querySet = UserClass.objects.get(username = user.username)
+                return redirect(reverse('spotiview:index'))
+            except (ObjectDoesNotExist,UserClass.DoesNotExist) as error:
+                user.save()
+                return redirect(reverse('spotiview:index'))
+
+        else:
+            print(register_form.errors)
+        return render(request,'registration/register.html',{'register_form':register_form})
 
 
 
