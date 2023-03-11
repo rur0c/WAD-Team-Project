@@ -8,6 +8,9 @@ import json
 from spotiview.forms import UserForm,TrackForm,CommentForm 
 from spotiview.models import UserClass,Track,Comment
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 
 # Create your views here.
@@ -91,7 +94,6 @@ class AddTrackView(View):
         else:
             print(form.errors)
         return render(request,'spotiview/add_track.html',{'form':form})
-
 
 
 """ class LoginView(View):
