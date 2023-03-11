@@ -93,7 +93,8 @@ class AddTrackView(View):
         return render(request,'spotiview/add_track.html',{'form':form})
 
 
-class LoginView(View):
+
+""" class LoginView(View):
     def get(self,request):
         return render(request,'registration/login.html')
     def post(self,request):
@@ -121,22 +122,20 @@ class LogoutView(View):
 
 class RegisterView(View):
     def get(self,request):
-        form = UserForm()
-        return render(request,'registration/register.html',{'form':form})
+        register_form = UserForm()
+        return render(request,'registration/register.html',{'register_form':register_form})
     def post(self,request):
         register_form = UserForm(request.POST)
         if register_form.is_valid():
             try:
                 user = register_form.save(commit=False)
-                querySet = UserClass.objects.get(username = user.username)
-                return redirect(reverse('spotiview:index'))
-            except (ObjectDoesNotExist,UserClass.DoesNotExist) as error:
                 user.save()
-                return redirect(reverse('spotiview:index'))
-
+                return redirect(reverse('register:login'))
+            except (ObjectDoesNotExist,UserClass.DoesNotExist) as error:
+                return redirect(reverse('register:login'))
         else:
             print(register_form.errors)
         return render(request,'registration/register.html',{'register_form':register_form})
-
+ """
 
 

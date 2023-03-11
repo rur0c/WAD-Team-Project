@@ -9,7 +9,4 @@ urlpatterns = [
     path('about/',views.AboutView.as_view(),name = 'about'),
     path('topsongs/',views.TopSongs.as_view(),name = 'topsongs'),
     path('addTrack/',views.AddTrackView.as_view(),name = 'add_track'),
-    path('login/',views.LoginView.as_view(),name = 'login'),
-    path('logout/',views.LogoutView.as_view(),name = 'logout'),
-    path('register/',views.RegisterView.as_view(),name = 'register'),
 ]

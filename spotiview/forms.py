@@ -1,5 +1,5 @@
 from django import forms
-from spotiview.models import Comment,UserClass,Track
+from spotiview.models import Comment,Track, UserClass
 from django.contrib.auth.models import User
 from datetime import datetime
 
