@@ -96,6 +96,11 @@ class AddTrackView(View):
         return render(request,'spotiview/add_track.html',{'form':form})
 
 
+class RestrictedView(View):
+    @login_required
+    def get(self,request):
+        return render(request,'spotiview/restricted.html')
+
 """ class LoginView(View):
     def get(self,request):
         return render(request,'registration/login.html')
