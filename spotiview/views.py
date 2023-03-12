@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.urls import reverse
 from django.views import View
 import requests
@@ -23,8 +23,14 @@ class AboutView(View):
 class TopSongs(View):
         def get(self,request):
             context_dic = {}
-            top_tracks = Track.objects.all().order_by('-listens')[:7]
-            context_dic["tracks"] = top_tracks;
+            # top_tracks = Track.objects.all().order_by('-listens')[:7]
+            top_tracks = Track.objects.all()
+            context_dic["tracks"] = top_tracks
+            for track in top_tracks:
+                querySet = Comment.objects.all().filter(TrackID = track.TrackID)
+                commentCount = querySet.count()
+                track.comments = commentCount
+            context_dic["tracks"] = top_tracks
             return render(request,'spotiview/topsongs.html',context=context_dic)
         
 
@@ -62,7 +68,10 @@ class SpotifySearch():
         Album = jsonRES["tracks"]["items"][0]["album"]["name"]
         SpotifyID = jsonRES["tracks"]["items"][0]["id"]
         TrackName = jsonRES["tracks"]["items"][0]["name"]
-        return (SpotifyID,Album,Artist,TrackName)
+        trackURL = jsonRES["tracks"]["items"][0]["external_urls"]["spotify"]
+        previewURL = jsonRES["tracks"]["items"][0]["preview_url"]
+        coverImageURL  = jsonRES["tracks"]["items"][0]["album"]["images"][0]["url"]      #640 x 640 image for track cover
+        return (SpotifyID,Album,Artist,TrackName,trackURL,previewURL,coverImageURL)
          
          
     
@@ -76,7 +85,7 @@ class AddTrackView(View):
         if form.is_valid():
             try:
                 track = form.save(commit=False)
-                (SpotifyID,Album,Artist,NewName) = SpotifySearch().api_search_request(track.TrackName)
+                (SpotifyID,Album,Artist,NewName,trackURL,previewURL,coverImageURL) = SpotifySearch().api_search_request(track.TrackName)
                 querySet = Track.objects.get(SpotifyID = SpotifyID)
                 return redirect(reverse('spotiview:index'))
             except (ObjectDoesNotExist,Track.DoesNotExist) as error:
@@ -87,12 +96,30 @@ class AddTrackView(View):
                 track.album = Album
                 track.artist = Artist
                 track.TrackName = NewName
+                track.cover_imageURL = coverImageURL
+                track.trackURL = trackURL
+                track.previewURL = previewURL
                 track.save()
                 return redirect(reverse('spotiview:index'))
 
         else:
             print(form.errors)
         return render(request,'spotiview/add_track.html',{'form':form})
+
+
+
+class ListenOnSpotify(View):
+    def get(request,trackID):
+        trackIdentity = trackID.GET.get("trackID")
+        currentTrack = get_object_or_404(Track,TrackID=trackIdentity)
+        if currentTrack != None:
+            currentTrack.listens = currentTrack.listens + 1
+            currentTrack.save()
+            return redirect(currentTrack.trackURL)
+        
+        return redirect(reverse('spotiview:topsongs'))
+
+     
 
           
 

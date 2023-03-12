@@ -14,6 +14,9 @@ class Track(models.Model):
     likes = models.IntegerField(default=0,blank=True)
     dislikes = models.IntegerField(default=0,blank=True)
     listens = models.IntegerField(default=0,blank=True)
+    cover_imageURL = models.URLField(blank=True)
+    trackURL  = models.URLField(blank=True)
+    previewURL = models.URLField(blank=True)
     slug = models.SlugField()
 
     class Meta:
@@ -35,7 +38,7 @@ class UserClass(models.Model):
     # for authentication based access (also gives username,password, etc)
     
     def __str__(self):
-        return self.UserID + "ID with username: "  + self.user.username
+        return str(self.UserID) + "ID with username: "  + self.user.username
 
 
 
@@ -51,7 +54,7 @@ class Comment(models.Model):
         verbose_name_plural = 'Comments'
 
     def __str__(self):
-        return self.comment + " was published on " + self.DateTime
+        return self.comment + " was published on " + str(self.DateTime)
 
 
 

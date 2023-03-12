@@ -4,7 +4,7 @@ from spotiview.models import Comment,Track,UserClass
 # Register your models here.
 
 class TrackAdmin(admin.ModelAdmin):
-    list_display = ('TrackID','SpotifyID','TrackName','album','artist','likes','dislikes','listens')
+    list_display = ('TrackID','SpotifyID','TrackName','album','artist','cover_imageURL','trackURL','previewURL','likes','dislikes','listens')
 
 class CommentsAdmin(admin.ModelAdmin):
     list_display = ('comment','DateTime')

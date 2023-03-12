@@ -22,9 +22,52 @@
             <blockquote class="blockquote text-center">
             <h1 class="mb-0"><strong>Top Songs</strong>
             <footer class="blockquote-footer" id="header_footer"><small><em>Best of the Best</em></small></footer></blockquote>
-        
+
+            {% for track in tracks %}
+
+                
+            <div class="d-flex justify-content-center">
+                <div class="card text-center text-white bg-dark" style="width: 30rem;">
+                    <img class="card-img-top" src="{{track.cover_imageURL}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{track.TrackName}}</h5>
+                        <p class="card-text">By {{track.artist}} in {{track.album}}</p>
+                        <p class="card-text">Listens: {{track.listens}}</p>
+                        <div class="container-fluid">
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-3">
+                                    <a href="#" class="btn btn-primary">Like</a>
+                                    <p class="card-text">{{track.likes}}</p>
+                                </div>
+
+                                <div class="col-3">
+                                    <a href="#" class="btn btn-danger">Dislike</a>
+                                    <p class="card-text">{{track.dislikes}}</p>
+                                </div>
+
+                                <div class="col-3">
+                                    <a href="#" class="btn btn-light">Comment</a>
+                                    <p class="card-text">{{track.comments}}</p>
+                                </div>
+
+                                <div class="col-3">
+                                    <a href ="{% url 'spotiview:listenOnSpotify' %}?trackID={{track.TrackID}}">
+                                    <img src="{{MEDIA_URL}}White.png" width="40" height="40" class="d-inline-block align-text-top"></a>
+                                    <p class="card-text">{{track.listens}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div><br>
 
         </div>
+
+            {% endfor %}
+
+
 
 
 

@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path ,include
 from spotiview import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.IndexView.as_view(),name = 'index'),
     path('spotiview/',include('spotiview.urls')),
     path('accounts/', include('registration.backends.simple.urls')),
-]
+] + static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)
