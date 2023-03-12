@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.views import View
-import requests
+# import requests
 from base64 import b64encode
 from spotify_review_project import settings
 import json
