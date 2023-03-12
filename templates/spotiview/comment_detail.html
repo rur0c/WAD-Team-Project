@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% extends 'spotiview/base.html' %}
+{% load staticfiles %} 
+
+{% block title %}
+    Comment
+{% endblock %}
+
+{% block body %}
+	<h1><strong>
+<link rel="stylesheet" type="text/css" href="{% static 'comments/comment.css' %}">
+
+  <h3>Add a Comment</h3>
+  <form action="{% url 'add_comment' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+{% endif %}
+
+{% for comment in comments %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ comment.user.username }}</h5>
+      <p class="card-text">{{ comment.content }}</p>
+      <small class="text-muted">{{ comment.created_at }}</small>
+    </div>
+  </div>
+{% endfor %}
+	</strong></h1>
+{% endblock %}

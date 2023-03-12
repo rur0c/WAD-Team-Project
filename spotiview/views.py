@@ -1,13 +1,15 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect, get_object_or_404
 from django.urls import reverse
 from django.views import View
-# import requests
+import requests
 from base64 import b64encode
 from spotify_review_project import settings
 import json
 from spotiview.forms import UserForm,TrackForm,CommentForm
 from spotiview.models import UserClass,Track,Comment
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 
@@ -91,7 +93,22 @@ class AddTrackView(View):
             print(form.errors)
         return render(request,'spotiview/add_track.html',{'form':form})
 
-          
+# @login_required
+def add_comment(request):
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.save()
+            return HttpResponseRedirect(comment.get_absolute_url())
+    else:
+        form = CommentForm()
+    return render(request, 'spotiview/comment_form.html', {'form': form})
+def comment_detail(request, pk):
+    comment = get_object_or_404(Comment, pk=pk)
+    return render(request, 'spotiview/comment_form.html', {'comment': comment})
+         
 
 
 

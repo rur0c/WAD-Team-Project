@@ -54,10 +54,3 @@ class Comment(models.Model):
         return self.comment + " was published on " + self.DateTime
 
 
-
-
-
-
-
-    
-
