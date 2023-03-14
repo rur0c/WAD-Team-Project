@@ -9,5 +9,7 @@ urlpatterns = [
     path('about/',views.AboutView.as_view(),name = 'about'),
     path('topsongs/',views.TopSongs.as_view(),name = 'topsongs'),
     path('addTrack/',views.AddTrackView.as_view(),name = 'add_track'),
+    path('restricted/', views.RestrictedView.as_view(), name='restricted'),
+
 
 ]

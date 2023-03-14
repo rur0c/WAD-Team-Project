@@ -7,12 +7,8 @@
 {% endblock %}
 
 {% block body %}
-
-<div class = "containter">
-    <h1>Add a Track</h1>
-</div>
-
 <div class="container">
+    <h1>Add Track</h1>
     <div class="row">
         <form role="form" id="add_track" method="post" action="{% url 'spotiview:add_track' %}">
             {% csrf_token %}

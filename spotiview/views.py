@@ -5,9 +5,14 @@ import requests
 from base64 import b64encode
 from spotify_review_project import settings
 import json
-from spotiview.forms import UserForm,TrackForm,CommentForm
+from spotiview.forms import UserForm,TrackForm,CommentForm 
 from spotiview.models import UserClass,Track,Comment
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
+
 
 # Create your views here.
 
@@ -91,7 +96,54 @@ class AddTrackView(View):
             print(form.errors)
         return render(request,'spotiview/add_track.html',{'form':form})
 
-          
 
+class RestrictedView(View):
+    @method_decorator(login_required)
+    def get(self, request):
+        return render(request, 'spotiview/restricted.html')
+    
+""" class LoginView(View):
+    def get(self,request):
+        return render(request,'registration/login.html')
+    def post(self,request):
+        username = request.POST['username']
+        password = request.POST['password']
+        try:
+            user = UserClass.objects.get(username=username)
+            if user.password == password:
+                request.session['user_id'] = user.UserID
+                return redirect(reverse('spotiview:index'))
+            else:
+                return redirect(reverse('register:login'))
+        except (ObjectDoesNotExist,UserClass.DoesNotExist) as error:
+            return redirect(reverse('register:login'))
+    
+
+class LogoutView(View):
+    def get(self,request):
+        try:
+            del request.session['user_id']
+        except KeyError:
+            pass
+        return redirect(reverse('spotiview:index'))
+    
+
+class RegisterView(View):
+    def get(self,request):
+        register_form = UserForm()
+        return render(request,'registration/register.html',{'register_form':register_form})
+    def post(self,request):
+        register_form = UserForm(request.POST)
+        if register_form.is_valid():
+            try:
+                user = register_form.save(commit=False)
+                user.save()
+                return redirect(reverse('register:login'))
+            except (ObjectDoesNotExist,UserClass.DoesNotExist) as error:
+                return redirect(reverse('register:login'))
+        else:
+            print(register_form.errors)
+        return render(request,'registration/register.html',{'register_form':register_form})
+ """
 
 

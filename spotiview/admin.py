@@ -9,9 +9,6 @@ class TrackAdmin(admin.ModelAdmin):
 class CommentsAdmin(admin.ModelAdmin):
     list_display = ('comment','DateTime')
 
-class UserClassAdmin(admin.ModelAdmin):
-    list_display = ('UserID','user')
-
 admin.site.register(Track,TrackAdmin)
-admin.site.register(UserClass,UserClassAdmin)
 admin.site.register(Comment,CommentsAdmin)
+admin.site.register(UserClass)
