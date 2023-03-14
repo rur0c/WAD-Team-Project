@@ -1,13 +1,15 @@
-<!DOCTYPE html>
+{% extends 'spotiview/base.html' %}
 {% load staticfiles %}
 
-{% block title_block %}
+{% block title %}
     Restricted Page
 {% endblock %}
 
-{% block body_block %}
-    <h1>Restricted Page</h1>
-This is a restricted page. You can only see it if you are logged in.
-Since you're logged in, you can see this text!
-<br />
+{% block body %}
+<div class="jumbotron p-4">
+    <div class="container">
+        <h1 class="jumbotron-heading">Restricted Page</h1>
+    </div>
+</div>
+Since you're logged in, you can see this text!<br />
 {% endblock %}

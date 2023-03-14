@@ -11,6 +11,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.utils.decorators import method_decorator
 
 
 # Create your views here.
@@ -97,10 +98,10 @@ class AddTrackView(View):
 
 
 class RestrictedView(View):
-    @login_required
-    def get(self,request):
-        return render(request,'spotiview/restricted.html')
-
+    @method_decorator(login_required)
+    def get(self, request):
+        return render(request, 'spotiview/restricted.html')
+    
 """ class LoginView(View):
     def get(self,request):
         return render(request,'registration/login.html')
