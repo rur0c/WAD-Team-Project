@@ -11,7 +11,8 @@ urlpatterns = [
     path('addTrack/',views.AddTrackView.as_view(),name = 'add_track'),
     path('listenOnSpotify/',views.ListenOnSpotify.as_view(),name='listenOnSpotify'),
     path('like_track/', views.LikeTrackView.as_view(), name='like_track'),
-    path('get_track/', views.GetTrack.as_view(), name='get_track'),
     path('unlike_track/', views.DeincrementLikeCount.as_view(), name='unlike_track'),
+    path('dislike_track/', views.DisLikeTrackView.as_view(), name='dislike_track'),
+    path('undislike_track/', views.DeincrementDislikeCount.as_view(), name='undislike_track'),
 
 ]

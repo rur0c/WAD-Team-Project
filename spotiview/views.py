@@ -140,16 +140,6 @@ class LikeTrackView(View):
         currentTrack.save()
         return HttpResponse(currentTrack.likes)
 
-class GetTrack(View):
-    def get(self,request):
-        trackIdentity = request.GET['trackID']
-        try:
-            currentTrack = get_object_or_404(Track,TrackID=trackIdentity)
-        except Track.DoesNotExist:
-            return HttpResponse(-1)
-        except ValueError:
-            return HttpResponse(-1)
-        return HttpResponse(currentTrack.likes)
     
 
 class DeincrementLikeCount(View):
@@ -165,6 +155,40 @@ class DeincrementLikeCount(View):
         currentTrack.likes = currentTrack.likes - 1
         currentTrack.save()
         return HttpResponse(currentTrack.likes)
+    
+
+
+
+class DisLikeTrackView(View):
+    #@method_decorator(login_required)
+    def get(self,request):
+        trackIdentity = request.GET['trackID']
+        try:
+            currentTrack = get_object_or_404(Track,TrackID=trackIdentity)
+        except Track.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        currentTrack.dislikes = currentTrack.dislikes + 1
+        currentTrack.save()
+        return HttpResponse(currentTrack.dislikes)
+
+    
+
+class DeincrementDislikeCount(View):
+    #@method_decorator(login_required)
+    def get(self,request):
+        trackIdentity = request.GET['trackID']
+        try:
+            currentTrack = get_object_or_404(Track,TrackID=trackIdentity)
+        except Track.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        currentTrack.dislikes = currentTrack.dislikes - 1
+        currentTrack.save()
+        return HttpResponse(currentTrack.dislikes)
+
 
 
 
