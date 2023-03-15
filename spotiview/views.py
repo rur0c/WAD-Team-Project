@@ -8,6 +8,10 @@ import json
 from spotiview.forms import UserForm,TrackForm,CommentForm
 from spotiview.models import UserClass,Track,Comment
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
@@ -109,8 +113,8 @@ class AddTrackView(View):
 
 
 class ListenOnSpotify(View):
-    def get(request,trackID):
-        trackIdentity = trackID.GET.get("trackID")
+    def get(self,request):
+        trackIdentity = request.GET.get("trackID")
         currentTrack = get_object_or_404(Track,TrackID=trackIdentity)
         if currentTrack != None:
             currentTrack.listens = currentTrack.listens + 1
@@ -118,8 +122,51 @@ class ListenOnSpotify(View):
             return redirect(currentTrack.trackURL)
         
         return redirect(reverse('spotiview:topsongs'))
+    
 
-     
+
+
+class LikeTrackView(View):
+    #@method_decorator(login_required)
+    def get(self,request):
+        trackIdentity = request.GET['trackID']
+        try:
+            currentTrack = get_object_or_404(Track,TrackID=trackIdentity)
+        except Track.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        currentTrack.likes = currentTrack.likes + 1
+        currentTrack.save()
+        return HttpResponse(currentTrack.likes)
+
+class GetTrack(View):
+    def get(self,request):
+        trackIdentity = request.GET['trackID']
+        try:
+            currentTrack = get_object_or_404(Track,TrackID=trackIdentity)
+        except Track.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        return HttpResponse(currentTrack.likes)
+    
+
+class DeincrementLikeCount(View):
+    #@method_decorator(login_required)
+    def get(self,request):
+        trackIdentity = request.GET['trackID']
+        try:
+            currentTrack = get_object_or_404(Track,TrackID=trackIdentity)
+        except Track.DoesNotExist:
+            return HttpResponse(-1)
+        except ValueError:
+            return HttpResponse(-1)
+        currentTrack.likes = currentTrack.likes - 1
+        currentTrack.save()
+        return HttpResponse(currentTrack.likes)
+
+
 
           
 

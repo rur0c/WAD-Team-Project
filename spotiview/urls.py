@@ -10,5 +10,8 @@ urlpatterns = [
     path('topsongs/',views.TopSongs.as_view(),name = 'topsongs'),
     path('addTrack/',views.AddTrackView.as_view(),name = 'add_track'),
     path('listenOnSpotify/',views.ListenOnSpotify.as_view(),name='listenOnSpotify'),
+    path('like_track/', views.LikeTrackView.as_view(), name='like_track'),
+    path('get_track/', views.GetTrack.as_view(), name='get_track'),
+    path('unlike_track/', views.DeincrementLikeCount.as_view(), name='unlike_track'),
 
 ]
