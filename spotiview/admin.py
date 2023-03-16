@@ -17,4 +17,4 @@ class UserClassAdmin(admin.ModelAdmin):
 
 admin.site.register(Track,TrackAdmin)
 admin.site.register(Comment,CommentsAdmin)
-admin.site.register(UserClass)
+admin.site.register(UserClass,UserClassAdmin)

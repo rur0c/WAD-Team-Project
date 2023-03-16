@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.db.models.signals import post_save
 
 # Create your models here.
 
@@ -58,15 +59,16 @@ class UserClass(models.Model):
     
     def get_user_dislikes(self):
         return "\n".join([track.TrackName for track in self.userDisLikes.all()])
+    
 
 
 
 
 class Comment(models.Model):
     MAX_LENGTH = 200
+    CommentID = models.IntegerField(unique=True,primary_key=True)
     TrackID = models.ForeignKey(Track, on_delete=models.CASCADE)
     UserID = models.ForeignKey(UserClass, on_delete=models.CASCADE)
-    CommentID = models.IntegerField(unique=True,primary_key=True)
     comment = models.CharField(max_length=MAX_LENGTH)
     DateTime = models.DateTimeField()
 
@@ -75,6 +77,18 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment + " was published on " + str(self.DateTime)
+    
+
+
+def create_concrete_profile(sender,instance,created,**kwargs):
+    if created:
+        newProfile = UserClass(user=instance)
+        newProfile.save()
+
+    
+post_save.connect(create_concrete_profile,sender = User)
+
+
 
 
 

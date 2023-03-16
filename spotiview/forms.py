@@ -30,4 +30,10 @@ class UserForm(forms.ModelForm):
         fields = ('username','password',)
 
 
+# class UserClassForm(forms.ModelForm):
+#     class Meta:
+#         model = UserClass
+#         fields = ('',)
+
+
 
