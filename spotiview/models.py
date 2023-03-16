@@ -6,15 +6,6 @@ from django.template.defaultfilters import slugify
 
 
 
-class UserClass(models.Model):
-    UserID = models.IntegerField(unique=True,primary_key=True)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    # 1 - 1 relationship between the Django's User model to allow
-    # for authentication based access (also gives username,password, etc)
-    
-    def __str__(self):
-        return str(self.UserID) + "ID with username: "  + self.user.username
-
 class Track(models.Model):
     MAX_LENGHT = 200
     TrackID = models.IntegerField(unique=True,primary_key=True)
@@ -29,8 +20,6 @@ class Track(models.Model):
     trackURL  = models.URLField(blank=True)
     previewURL = models.URLField(blank=True)
     slug = models.SlugField()
-    userLikes = models.ManyToManyField(User,related_name="user_likes")
-    userDisLikes = models.ManyToManyField(User,related_name="user_dislikes")
 
     class Meta:
         verbose_name_plural = 'Tracks'
@@ -42,20 +31,33 @@ class Track(models.Model):
         self.slug = slugify(self.TrackName)
         super(Track,self).save(*args,**kwargs)
 
-    def get_user_likes(self):
-        return "\n".join([user.username for user in self.userLikes.all()])
-    
-    def get_user_dislikes(self):
-        return "\n".join([user.username for user in self.userDisLikes.all()])
-    
-    
-        
     @property
     def commentCount(self):
         querySet = Comment.objects.all().filter(TrackID = self.TrackID)
         commentCount = querySet.count()
         return commentCount
 
+
+
+
+class UserClass(models.Model):
+    UserID = models.IntegerField(unique=True,primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # 1 - 1 relationship between the Django's User model to allow
+    # for authentication based access (also gives username,password, etc)
+    userLikes = models.ManyToManyField(Track,related_name="user_likes")
+    userDisLikes = models.ManyToManyField(Track,related_name="user_dislikes")
+    
+    def __str__(self):
+        return str(self.UserID) + "ID with username: "  + self.user.username
+    
+
+
+    def get_user_likes(self):
+        return "\n".join([track.TrackName for track in self.userLikes.all()])
+    
+    def get_user_dislikes(self):
+        return "\n".join([track.TrackName for track in self.userDisLikes.all()])
 
 
 

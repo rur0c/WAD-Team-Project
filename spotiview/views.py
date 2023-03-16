@@ -32,13 +32,18 @@ class TopSongs(View):
             context_dic = {}
             # top_tracks = Track.objects.all().order_by('-listens')[:7]
             top_tracks = Track.objects.all()
+            try:
+                currentUser = get_object_or_404(UserClass,user=request.user)
+            except TypeError:
+                context_dic["tracks"] = top_tracks
+                return render(request,'spotiview/topsongs.html',context=context_dic)
 
-
-            for track in top_tracks:
-                if (request.user in track.userLikes.all()):
-                    track.liked = True
-                if (request.user in track.userDisLikes.all()):
-                    track.disliked = True
+            if currentUser != None:
+                for track in top_tracks:
+                    if (track in currentUser.userLikes.all()):
+                        track.liked = True
+                    if (track in currentUser.userDisLikes.all()):
+                        track.disliked = True
 
             context_dic["tracks"] = top_tracks
             context_dic["user"] = request.user
@@ -146,7 +151,8 @@ class LikeTrackView(View):
             return HttpResponse(-1)
         currentTrack.likes = currentTrack.likes + 1
         currentTrack.save()
-        currentTrack.userLikes.add(request.user)
+        currentUser = get_object_or_404(UserClass,user=request.user)
+        currentUser.userLikes.add(Track.objects.get(TrackID = trackIdentity))
         return HttpResponse(currentTrack.likes)
 
     
@@ -163,7 +169,8 @@ class DeincrementLikeCount(View):
             return HttpResponse(-1)
         currentTrack.likes = currentTrack.likes - 1
         currentTrack.save()
-        currentTrack.userLikes.remove(request.user)
+        currentUser = get_object_or_404(UserClass,user=request.user)
+        currentUser.userLikes.remove(Track.objects.get(TrackID = trackIdentity))
         return HttpResponse(currentTrack.likes)
     
 
@@ -181,7 +188,8 @@ class DisLikeTrackView(View):
             return HttpResponse(-1)
         currentTrack.dislikes = currentTrack.dislikes + 1
         currentTrack.save()
-        currentTrack.userDisLikes.add(request.user)
+        currentUser = get_object_or_404(UserClass,user=request.user)
+        currentUser.userDisLikes.add(Track.objects.get(TrackID = trackIdentity))
         return HttpResponse(currentTrack.dislikes)
 
     
@@ -198,7 +206,8 @@ class DeincrementDislikeCount(View):
             return HttpResponse(-1)
         currentTrack.dislikes = currentTrack.dislikes - 1
         currentTrack.save()
-        currentTrack.userDisLikes.remove(request.user)
+        currentUser = get_object_or_404(UserClass,user=request.user)
+        currentUser.userDisLikes.remove(Track.objects.get(TrackID = trackIdentity))
         return HttpResponse(currentTrack.dislikes)
 
 
