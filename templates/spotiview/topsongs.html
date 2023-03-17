@@ -17,17 +17,14 @@
 
 
 {% block body %}
-
-
     {% if  tracks %}
         <div class="container">
             <blockquote class="blockquote text-center">
             <h1 class="mb-0"><strong>Top Songs</strong>
             <footer class="blockquote-footer" id="header_footer"><small><em>Best of the Best</em></small></footer></blockquote>
 
+    
             {% for track in tracks %}
-
-                
             <div class="d-flex justify-content-center">
                 <div class="card text-center text-white bg-dark" style="width: 30rem;">
                     <img class="card-img-top" src="{{track.cover_imageURL}}" alt="Card image cap">
@@ -76,20 +73,9 @@
                     </div>
                 </div>
             </div><br>
-
-
-
-        </div>
-
+            </div>
             {% endfor %}
-
-
-
-
-
-
-
-
+        </div>
 
     {% else %}
 
@@ -98,4 +84,5 @@
 
 
 {% endblock %}
+
 

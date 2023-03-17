@@ -7,8 +7,8 @@
 {% endblock %}
 
 
-{% block body %}
-<div class="container">
+{% block leftblock %}
+<div class="container green-card">
     <h1>Register Here</h1>
     <div class="row">
         <div class="form-group" >
@@ -17,7 +17,7 @@
                 <div class="form-group">
                     <p class="required">
                         <label class="required" for="id_username">Username:</label>
-                        <input class="form-control" id="id_username" maxlength="30" name="username" type="text" />
+                        <input class="form-control" id="id_username" maxlength="30" name="username" type="text" placeholder="Username"/>
                         <span class="helptext">
                             Required. 30 characters or fewer.
                             Letters, digits and @/./+/-/_ only.
@@ -25,15 +25,15 @@
                     </p>
                     <p class="required">
                         <label class="required" for="id_email">E-mail:</label>
-                        <input class="form-control" id="id_email" name="email" type="email" />
+                        <input class="form-control" id="id_email" name="email" type="email" placeholder="Email" />
                     </p>
                     <p class="required">
                         <label class="required" for="id_password1">Password:</label>
-                        <input class="form-control" id="id_password1" name="password1" type="password" />
+                        <input class="form-control" id="id_password1" name="password1" type="password" placeholder="Password" />
                     </p>
                     <p class="required">
                         <label class="required" for="id_password2">Password confirmation:</label>
-                        <input class="form-control" id="id_password2" name="password2" type="password" />
+                        <input class="form-control" id="id_password2" name="password2" type="password" placeholder="Password"/>
                         <span class="helptext">
                             Enter the same password as before, for verification.
                         </span>

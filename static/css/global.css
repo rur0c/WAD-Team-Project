@@ -1,0 +1,92 @@
+body{
+    margin-top: 20px;
+    margin-right: 10px;
+    background-color: #191414;
+}
+
+p{
+    color: #fff;
+    font-family: sans-serif;
+}
+
+h1{
+    color: #fff;
+    font-family: sans-serif;
+}
+
+.btn{
+    margin: 10px;
+    background-color: #191414;
+    border : 2px solid #1DB954;
+    color: #fff;
+}
+
+.btn:hover{
+    background-color: #1DB954;
+    border : 2px solid #fff;
+    color: #fff;
+}
+
+.btn-primary{
+    background-color: #191414;
+    border : 2px solid #fff;
+}
+
+.btn-primary:hover{
+    background-color: #191414;
+    border : 2px solid #1DB954;
+    color: #fff;
+}
+
+.form-control{
+    background-color: #ffffff;
+    color: #000000;    
+}
+
+label{
+    color: #fff;
+}
+
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: -1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  /* Control the left side */
+  .left {
+    left: 0;
+    background-color: #191414;
+  }
+  
+  /* Control the right side */
+  .right {
+    right: 0;
+    background-color: #1DB954;
+  }
+  
+  /* If you want the content centered horizontally and vertically */
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+  
+  /* Style the image inside the centered container, if needed */
+  .centered img {
+    width: 150px;
+    border-radius: 50%;
+  }
+
+  .green-card{
+    background-color: #1DB954;
+    border-radius: 30px;
+    transition: 0.3s;    
+    padding: 10px;
+  }

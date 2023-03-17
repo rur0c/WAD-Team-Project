@@ -192,16 +192,6 @@ class DeincrementDislikeCount(View):
         currentTrack.save()
         return HttpResponse(currentTrack.dislikes)
 
-
-
-
-          
-
-class RestrictedView(View):
-    @method_decorator(login_required)
-    def get(self, request):
-        return render(request, 'spotiview/restricted.html')
-    
 class LoginView(View):
     def get(self,request):
         return render(request,'registration/login.html')
