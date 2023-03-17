@@ -1,8 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.db.models.signals import post_save
 
 # Create your models here.
+
+
 
 class Track(models.Model):
     MAX_LENGHT = 200
@@ -28,7 +31,14 @@ class Track(models.Model):
     def save(self,*args,**kwargs):
         self.slug = slugify(self.TrackName)
         super(Track,self).save(*args,**kwargs)
-    
+
+    @property
+    def commentCount(self):
+        querySet = Comment.objects.all().filter(TrackID = self.TrackID)
+        commentCount = querySet.count()
+        return commentCount
+
+
 
 
 class UserClass(models.Model):
@@ -36,17 +46,29 @@ class UserClass(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # 1 - 1 relationship between the Django's User model to allow
     # for authentication based access (also gives username,password, etc)
+    userLikes = models.ManyToManyField(Track,related_name="user_likes")
+    userDisLikes = models.ManyToManyField(Track,related_name="user_dislikes")
     
     def __str__(self):
         return str(self.UserID) + "ID with username: "  + self.user.username
+    
+
+
+    def get_user_likes(self):
+        return "\n".join([track.TrackName for track in self.userLikes.all()])
+    
+    def get_user_dislikes(self):
+        return "\n".join([track.TrackName for track in self.userDisLikes.all()])
+    
+
 
 
 
 class Comment(models.Model):
     MAX_LENGTH = 200
+    CommentID = models.IntegerField(unique=True,primary_key=True)
     TrackID = models.ForeignKey(Track, on_delete=models.CASCADE)
     UserID = models.ForeignKey(UserClass, on_delete=models.CASCADE)
-    CommentID = models.IntegerField(unique=True,primary_key=True)
     comment = models.CharField(max_length=MAX_LENGTH)
     DateTime = models.DateTimeField()
 
@@ -55,6 +77,18 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment + " was published on " + str(self.DateTime)
+    
+
+
+def create_concrete_profile(sender,instance,created,**kwargs):
+    if created:
+        newProfile = UserClass(user=instance)
+        newProfile.save()
+
+    
+post_save.connect(create_concrete_profile,sender = User)
+
+
 
 
 

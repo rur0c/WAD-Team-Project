@@ -35,4 +35,10 @@ class UserForm(forms.ModelForm):
         }
 
 
+# class UserClassForm(forms.ModelForm):
+#     class Meta:
+#         model = UserClass
+#         fields = ('',)
+
+
 
