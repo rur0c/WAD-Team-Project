@@ -71,8 +71,16 @@ class Comment(models.Model):
     UserID = models.ForeignKey(UserClass, on_delete=models.CASCADE)
     comment = models.CharField(max_length=MAX_LENGTH)
     DateTime = models.DateTimeField()
+    post = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='comments')
+    name = models.CharField(max_length=MAX_LENGTH)
+    email = models.EmailField() 
+    body = models.TextField() 
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
 
     class Meta:
+        ordering = ('created',)
         verbose_name_plural = 'Comments'
 
     def __str__(self):

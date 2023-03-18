@@ -18,7 +18,7 @@
 
 {% block body %}
 
-
+    
     {% if  tracks %}
         <div class="container">
             <blockquote class="blockquote text-center">
@@ -82,6 +82,7 @@
                                         {{track.commentCount}}
                                     </a>
                                 </div>
+                                
                                 {% else %}
                             <div class="col-3">
                                 <button class="btn btn-primary custom_like_button" id="like_{{track.TrackID}}" data-trackID="{{track.TrackID}}" data-clicked="false" disabled>
@@ -110,6 +111,27 @@
                                 </a>
                             </div>
                             {% endif %}
+                            {% for comment in comments %}
+                            <div class="comment">
+                              <p class="info">
+                                Comment {{ forloop.counter }} by {{ comment.name }}
+                                {{ comment.created }}
+                              </p>
+                              {{ comment.body|linebreaks }}
+                            </div>
+                          {% empty %}
+                            <p>There are no comments yet.</p>
+                            {% if new_comment %}
+                            <p>Your comment has been added.</p>
+                          {% else %}
+                            <p>Add a new comment</p>
+                            <form action="." method="post">
+                              {{ comment_form.as_p }}
+                              {% csrf_token %}
+                              <p><input type="submit" value="Add comment"></p>
+                            </form>
+                          {% endif %}
+                          {% endfor %}
 
                             <div class="col-3">
                                 <a href ="{% url 'spotiview:listenOnSpotify' %}?trackID={{track.TrackID}}">
