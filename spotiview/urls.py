@@ -15,6 +15,6 @@ urlpatterns = [
     path('dislike_track/', views.DisLikeTrackView.as_view(), name='dislike_track'),
     path('undislike_track/', views.DeincrementDislikeCount.as_view(), name='undislike_track'),
     path('restricted/', views.RestrictedView.as_view(), name='restricted'),
-
+    path('chosensong/', views.ChosenSongView.as_view(), name ='chosensong'),
 
 ]

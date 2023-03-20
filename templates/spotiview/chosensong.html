@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+{% extends 'spotiview/base.html' %}
+{% load staticfiles %} 
+
+{% block title %}
+    ChosenSong
+{% endblock %}
+
+{% block body %}
+    <h1><strong>Chosen Song</strong></h1>
+
+</div>
+{% for comment in comments %}
+<div class="comment">
+  <p class="info">
+    Comment {{ forloop.counter }} by {{ comment.name }}
+    {{ comment.created }}
+  </p>
+  {{ comment.body|linebreaks }}
+</div>
+{% empty %}
+<p>There are no comments yet.</p>
+{% if new_comment %}
+<p>Your comment has been added.</p>
+{% else %}
+<p>Add a new comment</p>
+<form action="." method="post">
+  {{ comment_form.as_p }}
+  {% csrf_token %}
+  <p><input type="submit" value="Add comment"></p>
+</form>
+{% endif %}
+{% endfor %}
+<div class="col-3">
+    <a href ="{% url 'spotiview:listenOnSpotify' %}?trackID={{track.TrackID}}">
+    <img src="{{MEDIA_URL}}White.png" width="40" height="40" class="d-inline-block align-text-top"></a>
+</div>
+</div>
+
+</div><br>
+<audio controls>
+    <source src="{{track.previewURL}}" type="audio/mpeg">
+</audio>
+</div>
+{% endblock %}
