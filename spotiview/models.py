@@ -51,7 +51,7 @@ class UserClass(models.Model):
     userDisLikes = models.ManyToManyField(Track,related_name="user_dislikes")
     
     def __str__(self):
-        return str(self.UserID) + "ID with username: "  + self.user.username
+        return self.user.username
     
 
 

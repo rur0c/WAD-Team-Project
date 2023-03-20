@@ -100,12 +100,15 @@
             <div class="col-lg-8-mx-auto">
                 <!--display comment-->
                 <div class="media-list">
+                    <hr>
                     {% for comment in track_comments %}
                     <div>
                             <div class="small-1">
-                                <b> {{usernames.user_name}}</b>
                                 
-                                {{ user_name }}
+                                <b> {{ comment.UserID }}
+                                </b>
+                                
+                                
                                 <time class="ml-4 opaciy-70 small-3"> {{comment.DateTime}}</time>
                             </div>
                             <p> {{comment.comment}}</p>

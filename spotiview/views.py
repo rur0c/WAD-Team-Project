@@ -13,6 +13,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 
@@ -30,14 +31,17 @@ class ShowTrackView(View):
             user_name = {}
             track = Track.objects.get(slug = track_name_slug)
             context_dict['track'] = track
+            comment_list = []
+            
             track_comments = Comment.objects.all().filter(TrackID = track.TrackID)
-            for comment in track_comments:
-                pass
+       
+                
             track_comments_count = Comment.objects.all().filter(TrackID=track.TrackID).count()
             context_dict.update({
             'form': self.form,
             'track_comments': track_comments,
             'track_comments_count': track_comments_count,
+
         })
         except Track.DoesNotExist:
             context_dict['track'] = None
@@ -56,16 +60,6 @@ class ShowTrackView(View):
                 'slug': track.slug
             }
             ))
-    def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
-        track_comments_count = Comment.objects.all().filter(track=self.object.id).count()
-        track_comments = Comment.objects.all().filter(track=self.object.id)
-        context.update({
-            'form': self.form,
-            'track_comments': track_comments,
-            'track_comments_count': track_comments_count,
-        })
-        return context
 
 class IndexView(View):
     def get(self,request):
