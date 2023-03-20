@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.db.models.signals import post_save
+from django.utils import timezone
 
 # Create your models here.
 
@@ -20,7 +21,7 @@ class Track(models.Model):
     cover_imageURL = models.URLField(blank=True)
     trackURL  = models.URLField(blank=True)
     previewURL = models.URLField(blank=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name_plural = 'Tracks'
@@ -69,19 +70,10 @@ class Comment(models.Model):
     CommentID = models.IntegerField(unique=True,primary_key=True)
     TrackID = models.ForeignKey(Track, on_delete=models.CASCADE)
     UserID = models.ForeignKey(UserClass, on_delete=models.CASCADE)
-    comment = models.CharField(max_length=MAX_LENGTH)
-    DateTime = models.DateTimeField()
-    post = models.ForeignKey(Track, on_delete=models.CASCADE, related_name='comments')
-    name = models.CharField(max_length=MAX_LENGTH)
-    email = models.EmailField() 
-    body = models.TextField() 
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    active = models.BooleanField(default=True)
-
+    comment = models.TextField(max_length=MAX_LENGTH)
+    DateTime = models.DateTimeField(default=timezone.now)
     class Meta:
-        ordering = ('created',)
-        verbose_name_plural = 'Comments'
+        verbose_name_plural = 'comments'
 
     def __str__(self):
         return self.comment + " was published on " + str(self.DateTime)

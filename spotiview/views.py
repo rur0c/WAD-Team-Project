@@ -17,6 +17,55 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
+class ShowTrackView(View):
+    model = Track
+    template_name = "spotiview/chosensongs.html"
+    slug_field = "slug"
+
+    form = CommentForm
+
+    def get(self,request, track_name_slug):
+        context_dict = {}
+        try:
+            user_name = {}
+            track = Track.objects.get(slug = track_name_slug)
+            context_dict['track'] = track
+            track_comments = Comment.objects.all().filter(TrackID = track.TrackID)
+            for comment in track_comments:
+                pass
+            track_comments_count = Comment.objects.all().filter(TrackID=track.TrackID).count()
+            context_dict.update({
+            'form': self.form,
+            'track_comments': track_comments,
+            'track_comments_count': track_comments_count,
+        })
+        except Track.DoesNotExist:
+            context_dict['track'] = None
+        
+        return render(request, 'spotiview/chosensongs.html', context=context_dict)
+
+    def post(self,request, *args,**kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            track = self.get_object()
+            form.instance.user = request.user
+            form.instance.track = track
+            form.save()
+
+            return redirect(reverse("spotiview:show_track", kwargs={
+                'slug': track.slug
+            }
+            ))
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        track_comments_count = Comment.objects.all().filter(track=self.object.id).count()
+        track_comments = Comment.objects.all().filter(track=self.object.id)
+        context.update({
+            'form': self.form,
+            'track_comments': track_comments,
+            'track_comments_count': track_comments_count,
+        })
+        return context
 
 class IndexView(View):
     def get(self,request):
@@ -263,17 +312,17 @@ class RegisterView(View):
             print(register_form.errors)
         return render(request,'registration/register.html',{'register_form':register_form})
 
-class ChosenSongView(View):
+'''class ChosenSongView(View):
 
-    def post_detail(request, year, month, day, post):
-        post = get_object_or_404(Track, slug=post,
+    def post_detail(request, year, month, day, track):
+        track = get_object_or_404(Track, slug=track,
                                     status='published',
                                     publish__year=year,
                                     publish__month=month,
                                     publish__day=day)
 
         # List of active comments for this post
-        comments = post.comments.filter(active=True)
+        comments = track.comments.filter(active=True)
 
         new_comment = None
 
@@ -295,5 +344,5 @@ class ChosenSongView(View):
                     'comments': comments,
                     'new_comment': new_comment,
                     'comment_form': comment_form})
-
+'''
 
