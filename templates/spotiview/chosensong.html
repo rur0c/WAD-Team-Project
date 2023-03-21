@@ -11,15 +11,15 @@
 
 </div>
 {% for comment in comments %}
-<div class="comment">
-  <p class="info">
-    Comment {{ forloop.counter }} by {{ comment.name }}
-    {{ comment.created }}
-  </p>
-  {{ comment.body|linebreaks }}
-</div>
-{% empty %}
-<p>There are no comments yet.</p>
+      <div class="comment">
+        <p class="info">
+          Comment {{ forloop.counter }} by {{ comment.name }}
+          {{ comment.created }}
+        </p>
+        {{ comment.body|linebreaks }}
+      </div>
+  {% empty %}
+  <p>There are no comments yet.</p>
 {% if new_comment %}
 <p>Your comment has been added.</p>
 {% else %}

@@ -18,40 +18,6 @@ from django.utils import timezone
 
 
 # Create your views here.
-class ShowTrackView(View):
-    model = Track
-    template_name = "spotiview/chosensongs.html"
-    slug_field = "slug"
-
-    form = CommentForm
-
-    def get(self,request, track_name_slug):
-        context_dict = {}
-        try:
-            track = Track.objects.get(slug = track_name_slug)
-            context_dict['track'] = track
-            track_comments = Comment.objects.all().filter(TrackID = track.TrackID)
-            track_comments_count = Comment.objects.all().filter(TrackID=track.TrackID).count()
-            context_dict.update({
-            'form': self.form,
-            'track_comments': track_comments,
-            'track_comments_count': track_comments_count,
-        })
-        except Track.DoesNotExist:
-            context_dict['track'] = None
-        
-        return render(request, 'spotiview/chosensongs.html', context=context_dict)
-
-    def post(self,request, track_name_slug):
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            track = get_object_or_404(Track, slug = track_name_slug)
-            user = get_object_or_404(UserClass, user = request.user)
-            form.instance.user = request.user
-            form.instance.TrackID = track
-            form.instance.UserID = user
-            form.save()
-            return redirect(reverse("spotiview:show_track", track_name_slug))
 
 class IndexView(View):
     def get(self,request):
@@ -298,8 +264,9 @@ class RegisterView(View):
             print(register_form.errors)
         return render(request,'registration/register.html',{'register_form':register_form})
 
-'''class ChosenSongView(View):
 
+
+class ChosenSongView(View):
     def post_detail(request, year, month, day, track):
         track = get_object_or_404(Track, slug=track,
                                     status='published',
@@ -330,5 +297,53 @@ class RegisterView(View):
                     'comments': comments,
                     'new_comment': new_comment,
                     'comment_form': comment_form})
-'''
+
+
+class ShowTrackView(View):
+    model = Track
+    template_name = "spotiview/chosensongs.html"
+    slug_field = "slug"
+
+    form = CommentForm
+    @method_decorator(login_required)
+    def get(self,request,**kwargs):
+        context_dict = {}
+        try:
+            track_slug = kwargs['track_name_slug']
+            track = Track.objects.get(slug = track_slug)
+            track_comments = Comment.objects.all().filter(TrackID = track.TrackID)
+            track_comments_count = Comment.objects.all().filter(TrackID=track.TrackID).count()
+            currentUser = get_object_or_404(UserClass,user=request.user)
+            if currentUser != None:
+                if (track in currentUser.userLikes.all()):
+                    track.liked = True
+                if (track in currentUser.userDisLikes.all()):
+                    track.disliked = True
+
+            context_dict['track'] = track
+            context_dict.update({
+            'form': self.form,
+            'track_comments': track_comments,
+            'track_comments_count': track_comments_count,
+        })
+        except (Track.DoesNotExist,TypeError):
+            context_dict['track'] = None
+            return render(request,'spotiview/index.html')
+        
+        return render(request, 'spotiview/chosensongs.html', context=context_dict)
+
+    # def post(self,request,track_ID):
+    #     form = CommentForm(request.POST)
+    #     if form.is_valid():
+    #         track = get_object_or_404(Track, TrackID = track_ID)
+    #         user = get_object_or_404(UserClass, user = request.user)
+    #         form.instance.user = request.user
+    #         form.instance.TrackID = track
+    #         form.instance.UserID = user
+    #         form.save()
+    #         return redirect(reverse("spotiview:show_track", track_name_slug))
+
+
+
+    
 
