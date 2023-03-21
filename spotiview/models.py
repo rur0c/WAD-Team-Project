@@ -67,8 +67,8 @@ class UserClass(models.Model):
 
 class Comment(models.Model):
     MAX_LENGTH = 200
-    CommentID = models.IntegerField(unique=True,primary_key=True)
-    TrackID = models.ForeignKey(Track, on_delete=models.CASCADE)
+    CommentID = models.IntegerField(unique=True,primary_key=True,auto_created=True)
+    TrackID = models.ForeignKey(Track, on_delete=models.CASCADE,auto_created=True)
     UserID = models.ForeignKey(UserClass, on_delete=models.CASCADE)
     comment = models.TextField(max_length=MAX_LENGTH)
     DateTime = models.DateTimeField(default=timezone.now)

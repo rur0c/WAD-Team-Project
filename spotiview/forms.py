@@ -17,10 +17,12 @@ class TrackForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     comment = forms.CharField(widget=forms.Textarea(attrs={
         'class': 'md-textarea form-control',
-        'placeholder': 'comment here ...',
-        'rows': '4',
-        }))
-
+        'placeholder': 'Comment here ...',
+        'rows': '2',
+        }))    
+    TrackID = forms.IntegerField(widget=forms.HiddenInput(),required=False)
+    UserID = forms.IntegerField(widget=forms.HiddenInput(),required=False)
+    
     class Meta:
         model = Comment
         fields = ('comment',)
