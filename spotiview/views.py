@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.http import HttpResponseRedirect
 
 
 
@@ -331,17 +332,22 @@ class ShowTrackView(View):
             return render(request,'spotiview/index.html')
         
         return render(request, 'spotiview/chosensongs.html', context=context_dict)
-
-    # def post(self,request,track_ID):
-    #     form = CommentForm(request.POST)
-    #     if form.is_valid():
-    #         track = get_object_or_404(Track, TrackID = track_ID)
-    #         user = get_object_or_404(UserClass, user = request.user)
-    #         form.instance.user = request.user
-    #         form.instance.TrackID = track
-    #         form.instance.UserID = user
-    #         form.save()
-    #         return redirect(reverse("spotiview:show_track", track_name_slug))
+    @method_decorator(login_required)
+    def post(self,request,**kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            try:
+                track_slug = kwargs['track_name_slug']
+                track = get_object_or_404(Track, slug = track_slug)
+                user = get_object_or_404(UserClass, user = request.user)
+                form.instance.user = request.user
+                form.instance.TrackID = track
+                form.instance.UserID = user
+                form.save()
+            except (Track.DoesNotExist,TypeError):
+                return render(request,'spotiview/index.html')
+            
+            return HttpResponseRedirect(reverse('spotiview:show_track', args=(track_slug,)))
 
 
 
