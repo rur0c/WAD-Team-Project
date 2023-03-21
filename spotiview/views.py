@@ -13,6 +13,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
+from django.utils import timezone
+from django.http import HttpResponseRedirect
 
 
 
@@ -264,4 +266,90 @@ class RegisterView(View):
         return render(request,'registration/register.html',{'register_form':register_form})
 
 
+
+class ChosenSongView(View):
+    def post_detail(request, year, month, day, track):
+        track = get_object_or_404(Track, slug=track,
+                                    status='published',
+                                    publish__year=year,
+                                    publish__month=month,
+                                    publish__day=day)
+
+        # List of active comments for this post
+        comments = track.comments.filter(active=True)
+
+        new_comment = None
+
+        if request.method == 'POST':
+            # A comment was posted
+            comment_form = CommentForm(data=request.POST)
+            if comment_form.is_valid():
+                # Create Comment object but don't save to database yet          
+                new_comment = comment_form.save(commit=False)
+                # Assign the current post to the comment
+                new_comment.Track = Track
+                # Save the comment to the database
+                new_comment.save()
+        else:
+            comment_form = CommentForm()                   
+        return render(request,
+                    'spotiview/chosensong.html',
+                    {'track': Track,
+                    'comments': comments,
+                    'new_comment': new_comment,
+                    'comment_form': comment_form})
+
+
+class ShowTrackView(View):
+    model = Track
+    template_name = "spotiview/chosensongs.html"
+    slug_field = "slug"
+
+    form = CommentForm
+    @method_decorator(login_required)
+    def get(self,request,**kwargs):
+        context_dict = {}
+        try:
+            track_slug = kwargs['track_name_slug']
+            track = Track.objects.get(slug = track_slug)
+            track_comments = Comment.objects.all().filter(TrackID = track.TrackID)
+            track_comments_count = Comment.objects.all().filter(TrackID=track.TrackID).count()
+            currentUser = get_object_or_404(UserClass,user=request.user)
+            if currentUser != None:
+                if (track in currentUser.userLikes.all()):
+                    track.liked = True
+                if (track in currentUser.userDisLikes.all()):
+                    track.disliked = True
+
+            context_dict['track'] = track
+            context_dict.update({
+            'form': self.form,
+            'track_comments': track_comments,
+            'track_comments_count': track_comments_count,
+        })
+        except (Track.DoesNotExist,TypeError):
+            context_dict['track'] = None
+            return redirect(reverse("spotiview:index"))
+        
+        return render(request, 'spotiview/chosensongs.html', context=context_dict)
+    @method_decorator(login_required)
+    def post(self,request,**kwargs):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            try:
+                track_slug = kwargs['track_name_slug']
+                track = get_object_or_404(Track, slug = track_slug)
+                user = get_object_or_404(UserClass, user = request.user)
+                form.instance.user = request.user
+                form.instance.TrackID = track
+                form.instance.UserID = user
+                form.save()
+            except (Track.DoesNotExist,TypeError):
+                return redirect(reverse("spotiview:index"))
+            
+            return HttpResponseRedirect(reverse('spotiview:show_track', args=(track_slug,)))
+
+
+
+    
 
