@@ -329,7 +329,7 @@ class ShowTrackView(View):
         })
         except (Track.DoesNotExist,TypeError):
             context_dict['track'] = None
-            return render(request,'spotiview/index.html')
+            return redirect(reverse("spotiview:index"))
         
         return render(request, 'spotiview/chosensongs.html', context=context_dict)
     @method_decorator(login_required)
@@ -345,7 +345,7 @@ class ShowTrackView(View):
                 form.instance.UserID = user
                 form.save()
             except (Track.DoesNotExist,TypeError):
-                return render(request,'spotiview/index.html')
+                return redirect(reverse("spotiview:index"))
             
             return HttpResponseRedirect(reverse('spotiview:show_track', args=(track_slug,)))
 
