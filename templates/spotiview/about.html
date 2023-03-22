@@ -7,8 +7,50 @@
 {% endblock %}
 
 {% block body %}
-    <h1>About</h1>
-    <p>Spotiview is a web application that allows you to like, dislike and comment with other users.</p>
-    <p>It is built using the Django framework and the Spotify API.</p>
-    <p>It is currently in development.</p>
+<div class="container">
+  <h1>About Our Application</h1>
+  <p>Our goal is to create a community for music lovers where they can discover and share their favorite songs. Our application allows users to explore a selection of top songs curated by other users, and to add their own songs to the collection using the Spotify API. Users can interact with the community by liking and commenting on songs, and seeing what other users have to say. The app also features a leaderboard showcasing the top songs overall, as well as top songs by category.</p>
+  <h2>Key Features</h2>
+  <ul>
+    <li>Search for songs using Spotify search API</li>
+    <li>Registered users can add songs to the collection</li>
+    <li>User registration and account deletion</li>
+    <li>User authentication and login functionality</li>
+    <li>Change password and logout</li>
+    <li>View top liked songs on the website</li>
+    <li>Like, dislike, and comment on songs</li>
+    <li>View a personalized list of liked songs</li>
+  </ul>
+
+<h2>Our Developers</h2>
+  <ul>
+    <li>Arron Curry</li>
+    <li>Alan Gardiner</li>
+    <li>Ruari O'Hara</li>
+    <li>Raaed Sattar</li>
+    <li>Boris Velinov</li>
+    <li>Ahmet Yucel</li>
+  </ul>
+</div>
 {% endblock %}
+{% for comment in comments %}
+                            <div class="comment">
+                              <p class="info">
+                                Comment {{ forloop.counter }} by {{ comment.name }}
+                                {{ comment.created }}
+                              </p>
+                              {{ comment.body|linebreaks }}
+                            </div>
+                          {% empty %}
+                            <p>There are no comments yet.</p>
+                            {% if new_comment %}
+                            <p>Your comment has been added.</p>
+                          {% else %}
+                            <p>Add a new comment</p>
+                            <form action="." method="post">
+                              {{ comment_form.as_p }}
+                              {% csrf_token %}
+                              <p><input type="submit" value="Add comment"></p>
+                            </form>
+                          {% endif %}
+                          {% endfor %}

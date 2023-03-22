@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.db.models.signals import post_save
+from django.utils import timezone
 
 # Create your models here.
 
@@ -20,7 +21,7 @@ class Track(models.Model):
     cover_imageURL = models.URLField(blank=True)
     trackURL  = models.URLField(blank=True)
     previewURL = models.URLField(blank=True)
-    slug = models.SlugField()
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name_plural = 'Tracks'
@@ -50,7 +51,7 @@ class UserClass(models.Model):
     userDisLikes = models.ManyToManyField(Track,related_name="user_dislikes")
     
     def __str__(self):
-        return str(self.UserID) + "ID with username: "  + self.user.username
+        return self.user.username
     
 
 
@@ -66,14 +67,13 @@ class UserClass(models.Model):
 
 class Comment(models.Model):
     MAX_LENGTH = 200
-    CommentID = models.IntegerField(unique=True,primary_key=True)
-    TrackID = models.ForeignKey(Track, on_delete=models.CASCADE)
+    CommentID = models.IntegerField(unique=True,primary_key=True,auto_created=True)
+    TrackID = models.ForeignKey(Track, on_delete=models.CASCADE,auto_created=True)
     UserID = models.ForeignKey(UserClass, on_delete=models.CASCADE)
-    comment = models.CharField(max_length=MAX_LENGTH)
-    DateTime = models.DateTimeField()
-
+    comment = models.TextField(max_length=MAX_LENGTH)
+    DateTime = models.DateTimeField(default=timezone.now)
     class Meta:
-        verbose_name_plural = 'Comments'
+        verbose_name_plural = 'comments'
 
     def __str__(self):
         return self.comment + " was published on " + str(self.DateTime)
