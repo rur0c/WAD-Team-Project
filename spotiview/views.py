@@ -22,7 +22,24 @@ from django.http import HttpResponseRedirect
 
 class IndexView(View):
     def get(self,request):
-        return render(request,'spotiview/index.html')
+        context_dic = {}
+        random_tracks = Track.objects.order_by('?')[:3]
+        try:
+                currentUser = get_object_or_404(UserClass,user=request.user)
+        except TypeError:
+                context_dic["tracks"] = random_tracks
+                return render(request,'spotiview/index.html',context=context_dic)
+        
+        if currentUser != None:
+            for track in random_tracks:
+                if (track in currentUser.userLikes.all()):
+                    track.liked = True
+                if (track in currentUser.userDisLikes.all()):
+                    track.disliked = True
+
+        context_dic["tracks"] = random_tracks
+
+        return render(request,'spotiview/index.html',context=context_dic)
     
 
 class AboutView(View):
