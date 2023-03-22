@@ -29,12 +29,12 @@ h1{
 
 .btn-primary{
     background-color: #191414;
-    border : 2px solid #fff;
+    border : 2px solid #1DB954;
 }
 
 .btn-primary:hover{
-    background-color: #191414;
-    border : 2px solid #1DB954;
+    background-color: #1DB954;
+    border : 2px solid #fff;
     color: #fff;
 }
 
@@ -79,7 +79,7 @@ label{
   }
   
   /* Style the image inside the centered container, if needed */
-  .centered img {
+  #SpotifyLogo{
     width: 150px;
     border-radius: 50%;
   }

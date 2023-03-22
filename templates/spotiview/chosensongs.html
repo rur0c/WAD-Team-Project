@@ -99,7 +99,7 @@
 <!--comments-->
 <div class= "section">
     <div class="container">
-        <h3>Comments {{track_comments_count}} </h3>
+        <h1 style="color:white">Comments {{track_comments_count}} </h1>
         <div class="row">
             <div class="col-lg-8-mx-auto">
                 <!--display comment-->
@@ -109,9 +109,9 @@
                     <div>
                             <div class="small-1">
                                 
-                                <b> {{ comment.UserID }}</b>
+                                <b style="color:white"> {{ comment.UserID }}</b>
                                 
-                                <time class="ml-4 opaciy-70 small-3"> {{comment.DateTime}}</time>
+                                <time class="ml-4 opaciy-70 small-3" style="color:white"> {{comment.DateTime}}</time>
                             </div>
                             <p> {{comment.comment}}</p>
                         </div>
