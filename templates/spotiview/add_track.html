@@ -6,12 +6,12 @@
     Add Track
 {% endblock %}
 
-{% block body %}
+{% block leftblock %}
 <div class="container">
-    <h1>Add Track</h1>
     <div class="row">
         <form role="form" id="add_track" method="post" action="{% url 'spotiview:add_track' %}">
             {% csrf_token %}
+            <label for="id_track_name">Track Name:</label>
             {% for hidden in form.hidden_fields %}
                 {{hidden}}
             {% endfor %}
@@ -20,16 +20,11 @@
                 {{field.help_text}}
                 {{field}}
             {% endfor %}
-            <button class="btn btn-primary" type="submit" name="submit">
+            <button class="btn" id="add-track-btn" type="submit" name="submit">
                 Add Track
             </button>
         </form>
     </div>
 </div>
-
-
-
-
-
 {% endblock %}
 

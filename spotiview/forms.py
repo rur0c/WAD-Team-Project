@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 
 class TrackForm(forms.ModelForm):
-    TrackName = forms.CharField(max_length=Track.MAX_LENGHT,help_text="Enter the name of track/song")
+    TrackName = forms.CharField(max_length=Track.MAX_LENGHT, widget=forms.TextInput(attrs={'placeholder': 'Song you want to add', 'style': 'width: 300px;', 'class': 'form-control'}))
     slug = forms.CharField(widget=forms.HiddenInput(),required=False)
     likes = forms.IntegerField(widget=forms.HiddenInput(),initial=0)
     dislikes = forms.IntegerField(widget=forms.HiddenInput(),initial=0)
@@ -33,6 +33,11 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username','password',)
+        widgets = {
+            'username': forms.TextInput(attrs={'placeholder': 'Username', 'class': 'form-control'}),
+            'password': forms.TextInput(attrs={'placeholder': 'Password', 'class': 'form-control'}),
+
+        }
 
 
 # class UserClassForm(forms.ModelForm):
