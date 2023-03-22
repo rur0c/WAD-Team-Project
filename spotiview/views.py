@@ -5,7 +5,7 @@ import requests
 from base64 import b64encode
 from spotify_review_project import settings
 import json
-from spotiview.forms import UserForm,TrackForm,CommentForm 
+from spotiview.forms import UserForm,TrackForm,CommentForm,UserClassForm
 from spotiview.models import UserClass,Track,Comment
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
@@ -338,6 +338,27 @@ class ShowTrackView(View):
                 return redirect(reverse("spotiview:index"))
             
             return HttpResponseRedirect(reverse('spotiview:show_track', args=(track_slug,)))
+        
+
+
+class ProfileView(View):
+    @method_decorator(login_required)
+    def get(self,request,username):
+        context = {}
+        try:
+            user = get_object_or_404(User,username = username)
+            userProfile = get_object_or_404(UserClass,user = user)
+            customUserForm = UserClassForm()    
+        except TypeError:
+            return redirect(reverse("spotiview:index"))
+        
+        context["profileForm"] = customUserForm
+        context["user"] = user
+        context["userProfile"] = userProfile
+        context["likedTracks"] = userProfile.userLikes.all()
+        context["dislikedTracks"] = userProfile.userDisLikes.all()
+
+        return render(request,"spotiview/profile.html",context=context)
 
 
 

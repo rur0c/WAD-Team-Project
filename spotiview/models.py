@@ -49,6 +49,7 @@ class UserClass(models.Model):
     # for authentication based access (also gives username,password, etc)
     userLikes = models.ManyToManyField(Track,related_name="user_likes")
     userDisLikes = models.ManyToManyField(Track,related_name="user_dislikes")
+    profile_image = models.ImageField(upload_to='profile_pictures',blank=True)
     
     def __str__(self):
         return self.user.username

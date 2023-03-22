@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="{% static 'css/global.css' %}" type="text/css">
         {% block head %}{% endblock %}
     </head>
+    
 
     <body class="p-3 m-0 border-0 bd-example">
       <nav class="navbar navbar-expand-lg" id="navCustom">
@@ -33,6 +34,7 @@
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
                   <ul class="dropdown-menu">
                     {% if user.is_authenticated %}
+                    <li><a class="dropdown-item" href="{% url 'spotiview:profile' user.username %}">My Account</a></li> 
                     <li><a class="dropdown-item" href="{% url 'auth_logout' %}?next=/spotiview/">Log out</a></li> 
                     {% else %}            
                     <li><a class="dropdown-item" href="{% url 'auth_login' %}">Sign In</a></li>
@@ -61,11 +63,11 @@
       {% endblock %}
       </div>
     </div>
+
     {% block body %}
     {% endblock %}
 
     {% block footer %}
     {% endblock %}
-
-    </body>
+  </body>
 </html>

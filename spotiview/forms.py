@@ -38,12 +38,12 @@ class UserForm(forms.ModelForm):
             'password': forms.TextInput(attrs={'placeholder': 'Password', 'class': 'form-control'}),
 
         }
+        
 
-
-# class UserClassForm(forms.ModelForm):
-#     class Meta:
-#         model = UserClass
-#         fields = ('',)
+class UserClassForm(forms.ModelForm):
+    class Meta:
+        model = UserClass
+        fields = ('profile_image',)
 
 
 

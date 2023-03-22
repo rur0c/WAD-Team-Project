@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% extends 'spotiview/base.html' %}
+{% load staticfiles %} 
+
+
+{% block title %}
+    Profile {{user.username}}
+{% endblock %}
+
+
+{% block body %}
+
+    <div class="container" style="margin-left: 10px;">
+        <div class="d-flex justify-content-start">
+                <div class="col-3">
+                    {% if userProfile.profile_image %}
+                    <img src="{{ MEDIA_URL }}{{ userProfile.profile_image }}" width="200" height="200" alt="{{ user.username }}'s profile image" /><br />
+                    {% else %}
+                    <img src="{{ MEDIA_URL }}default.png" width="200" height="200" alt="{{ user.username }}'s profile image" /><br />
+                    {% endif %}
+                </div>
+                <div class="align-self-center">
+                    <div class="col-4">
+                        <h1>{{user.username}}'s Profile</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="container-sm w-50" style="margin-left: 1.5rem;">
+        {% if likedTracks %}
+            <h1>{{user.username}}'s liked Songs</h1>
+            {% for track in likedTracks %}
+                <a href="{% url 'spotiview:show_track' track.slug %}">
+                    <p>{{track.TrackName}} by {{track.artist}}</p>
+                </a>
+            {% endfor %}
+        {% else %}
+            <p>You dont have any liked tracks</p>
+        {% endif %}
+
+        {% if dislikedTracks %}
+            <h1>{{user.username}}'s disliked Songs</h1>
+            {% for track in dislikedTracks %}
+            <a href="{% url 'spotiview:show_track' track.slug %}">
+                <p>{{track.TrackName}} by {{track.artist}}</p>
+            </a>
+            {% endfor %}
+        {% else %}
+            <p>You dont have any disliked tracks</p>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block rightblock %}
+<div class="container">
+    <div class="row">
+        <form method="POST" action="{% url 'spotiview:profile' user.username %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ profileForm.as_p }}
+            </div><br>
+            <button class="btn btn-primary btn-block " type="submit">Update</button> 
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+

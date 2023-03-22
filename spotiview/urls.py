@@ -17,5 +17,6 @@ urlpatterns = [
     #path('restricted/', views.RestrictedView.as_view(), name='restricted'),
     #path('chosensong/<int:pk>/', views.ChosenSongView.as_view(), name='chosensong'),
     path('chosensongs/<slug:track_name_slug>/comment',views.ShowTrackView.as_view(), name='show_track'),
+    path('profile/<username>/',views.ProfileView.as_view(), name='profile'),
 
 ]
