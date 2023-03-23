@@ -30,6 +30,12 @@ class Track(models.Model):
         return self.TrackName + " by "  + self.artist
     
     def save(self,*args,**kwargs):
+        if self.listens<0:
+            self.listens = 0
+        elif self.likes<0:
+            self.likes = 0
+        elif self.dislikes <0:
+            self.dislikes =0
         self.slug = slugify(self.TrackName)
         super(Track,self).save(*args,**kwargs)
 
