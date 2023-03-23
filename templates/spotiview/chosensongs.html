@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/topsongs.css' %}" type="text/css">
 <script src="{% static 'js/likebutton.js' %}" crossorigin="anonymous" type="text/javascript"></script>
 <script src="{% static 'js/dislikebutton.js' %}" crossorigin="anonymous" type="text/javascript"></script>
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" type="text/css">
 {% endblock %}
 {% block title %}
     {{ track.TrackName }}
@@ -107,14 +108,27 @@
                     <hr>
                     {% for comment in track_comments %}
                     <div>
-                            <div class="small-1">
-                                
-                                <b style="color:white"> {{ comment.UserID }}</b>
-                                
-                                <time class="ml-4 opaciy-70 small-3" style="color:white"> {{comment.DateTime}}</time>
+                        <div class="small-1">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-1" style="width: 60px;";>
+                                        {% if comment.UserID.profile_image %}
+                                        <img id="UserPFP" src="{{ MEDIA_URL }}{{ comment.UserID.profile_image }}" width="50" height="50" alt="{{ comment.UserID.user.username }}'s profile image" /><br />
+                                        {% else %}
+                                        <img src="{{ MEDIA_URL }}default.png" width="50" height="50" alt="{{ comment.UserID.user.username }}'s profile image" /><br />
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-11">
+                                        <b style="color:white"> {{ comment.UserID }}</b>
+                            
+                                        <time class="ml-4 opaciy-70 small-3" style="color:white"> {{comment.DateTime}}</time>
+                                        <p> {{comment.comment}}</p>
+
+                                    </div>
+                                </div>
                             </div>
-                            <p> {{comment.comment}}</p>
                         </div>
+                    </div>
                     
                     {% endfor %}
                 </div>
