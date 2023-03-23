@@ -13,8 +13,6 @@
 
 
 {% block leftblock %}
-    </br><br>
-</br><br>
     <div class="container" id="UserNameAndPFP">
         <div class="d-flex justify-content-start">
                 <div class="col-4">
@@ -24,18 +22,26 @@
                     <img src="{{ MEDIA_URL }}default.png" width="200" height="200" alt="{{ user.username }}'s profile image" /><br />
                     {% endif %}
                 </div>
-                    <div class="col-5 d-flex align-items-center">
+                    <div class="col-8 d-flex align-items-center">
                         <h1>{{user.username}}'s Profile</h1>
                     </div>
             </div>
-        </div>
+        </div><br>
     <div class="container-sm w-50" id="leftContent">
         {% if likedTracks %}
             <h1>{{user.username}}'s liked Songs</h1>
             {% for track in likedTracks %}
-                <a href="{% url 'spotiview:show_track' track.slug %}">
-                    <p>{{track.TrackName}} by {{track.artist}}</p>
-                </a>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-1" id="coverImageWidth">
+                        <a href="{% url 'spotiview:show_track' track.slug %}">
+                        <img src="{{track.cover_imageURL}}" width="50" height="50" alt="{{track.TrackName}} cover"></a>
+                    </div>
+                    <div class="col-10 d-flex align-items-center">
+                        <p id="trackDetails">{{track.TrackName}} by {{track.artist}}</p>
+                    </div>
+                </div>
+            </div><br>
             {% endfor %}
         {% else %}
             <p>You dont have any liked tracks</p>
@@ -44,9 +50,17 @@
         {% if dislikedTracks %}
             <h1>{{user.username}}'s disliked Songs</h1>
             {% for track in dislikedTracks %}
-            <a href="{% url 'spotiview:show_track' track.slug %}">
-                <p>{{track.TrackName}} by {{track.artist}}</p>
-            </a>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-1" id="coverImageWidth">
+                        <a href="{% url 'spotiview:show_track' track.slug %}">
+                        <img src="{{track.cover_imageURL}}" width="50" height="50" alt="{{track.TrackName}} cover"></a>
+                    </div>
+                    <div class="col-10 d-flex align-items-center">
+                        <p id="trackDetails">{{track.TrackName}} by {{track.artist}}</p>
+                    </div>
+                </div>
+            </div><br>
             {% endfor %}
         {% else %}
             <p>You dont have any disliked tracks</p>
