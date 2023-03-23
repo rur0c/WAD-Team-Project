@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#Profile Image Upload Folder
+media/profile_pictures
