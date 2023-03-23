@@ -13,18 +13,22 @@
 {% endblock %}
 
 {% block leftblock %}
-<h1>Sp<a href="{% url 'registration_register' %}"><img src="{{MEDIA_URL}}White.png" alt="Logo" width="24" height="24"></img></a>tiview</h1>
-<h3 id="helpText">Click the icon to register so you can add your favourte tracks right away!</h3>
+<div class="centered">
+    <h1>Sp<a href="{% url 'registration_register' %}"><img src="{{MEDIA_URL}}White.png" alt="Logo" width="24" height="24"></img></a>tiview</h1>
+    <h3 id="helpText">Click the icon to register so you can add your favourte tracks right away!</h3>
+</div>
 {% endblock %}
 
 
 {% block rightblock %}
+<div class="centered">
     <img src="{% static 'images/icon.png' %}" alt="Logo" id="SpotifyLogo">
     <br/>
     <br/>
     <h3>Spotiview is a web application that allows you to like, dislike and comment with other users.</h3>
     <br/>
     <h4>It is built using the Django framework and the Spotify API.</h4>
+</div>
 {% endblock %}
 </div> 
 

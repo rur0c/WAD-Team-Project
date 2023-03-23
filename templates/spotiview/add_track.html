@@ -7,23 +7,25 @@
 {% endblock %}
 
 {% block leftblock %}
-<div class="container">
-    <div class="row">
-        <form role="form" id="add_track" method="post" action="{% url 'spotiview:add_track' %}">
-            {% csrf_token %}
-            <label for="id_track_name">Track Name:</label>
-            {% for hidden in form.hidden_fields %}
-                {{hidden}}
-            {% endfor %}
-            {% for field in form.visible_fields %}
-                {{field.errors}}
-                {{field.help_text}}
-                {{field}}
-            {% endfor %}
-            <button class="btn" id="add-track-btn" type="submit" name="submit">
-                Add Track
-            </button>
-        </form>
+<div class="centered">
+    <div class="container">
+        <div class="row">
+            <form role="form" id="add_track" method="post" action="{% url 'spotiview:add_track' %}">
+                {% csrf_token %}
+                <label for="id_track_name">Track Name:</label>
+                {% for hidden in form.hidden_fields %}
+                    {{hidden}}
+                {% endfor %}
+                {% for field in form.visible_fields %}
+                    {{field.errors}}
+                    {{field.help_text}}
+                    {{field}}
+                {% endfor %}
+                <button class="btn" id="add-track-btn" type="submit" name="submit">
+                    Add Track
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}

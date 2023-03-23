@@ -2,31 +2,33 @@
 {% extends 'spotiview/base.html' %}
 {% load staticfiles %} 
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" type="text/css">
+{% endblock %}
+
 
 {% block title %}
     Profile {{user.username}}
 {% endblock %}
 
 
-{% block body %}
+{% block leftblock %}
 
-    <div class="container" style="margin-left: 10px;">
+    <div class="container" id="UserNameAndPFP">
         <div class="d-flex justify-content-start">
-                <div class="col-3">
+                <div class="col-4">
                     {% if userProfile.profile_image %}
-                    <img src="{{ MEDIA_URL }}{{ userProfile.profile_image }}" width="200" height="200" alt="{{ user.username }}'s profile image" /><br />
+                    <img id="UserPFP" src="{{ MEDIA_URL }}{{ userProfile.profile_image }}" width="200" height="200" alt="{{ user.username }}'s profile image" /><br />
                     {% else %}
                     <img src="{{ MEDIA_URL }}default.png" width="200" height="200" alt="{{ user.username }}'s profile image" /><br />
                     {% endif %}
                 </div>
-                <div class="align-self-center">
-                    <div class="col-4">
+                    <div class="col-5 d-flex align-items-center">
                         <h1>{{user.username}}'s Profile</h1>
                     </div>
-                </div>
             </div>
         </div>
-    <div class="container-sm w-50" style="margin-left: 1.5rem;">
+    <div class="container-sm w-50" id="leftContent">
         {% if likedTracks %}
             <h1>{{user.username}}'s liked Songs</h1>
             {% for track in likedTracks %}
@@ -53,15 +55,17 @@
 {% endblock %}
 
 {% block rightblock %}
-<div class="container">
-    <div class="row">
-        <form method="POST" action="{% url 'spotiview:profile' user.username %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                {{ profileForm.as_p }}
-            </div><br>
-            <button class="btn btn-primary btn-block " type="submit">Update</button> 
-        </form>
+<div class="centered">
+    <div class="container">
+        <div class="row">
+            <form method="POST" action="{% url 'spotiview:profile' user.username %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ profileForm }}
+                </div><br>
+                <button class="btn btn-primary btn-block " type="submit">Update</button> 
+            </form>
+        </div>
     </div>
 </div>
 

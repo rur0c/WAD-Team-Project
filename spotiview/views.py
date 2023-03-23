@@ -359,6 +359,29 @@ class ProfileView(View):
         context["dislikedTracks"] = userProfile.userDisLikes.all()
 
         return render(request,"spotiview/profile.html",context=context)
+    
+    @method_decorator(login_required)
+    def post(self,request,username):
+        try:
+            user = get_object_or_404(User,username = username)
+            userProfile = get_object_or_404(UserClass,user = user)
+            customUserForm = UserClassForm(request.POST,request.FILES,instance=userProfile)    
+        except TypeError:
+            return redirect(reverse("spotiview:index"))
+        if customUserForm.is_valid(): #and user == user_profile.user:
+            customUserForm.save(commit = True)
+            return HttpResponseRedirect(reverse('spotiview:profile', args=(user.username,)))
+        else:
+            print(customUserForm.errors)
+        context = {}
+        context["profileForm"] = customUserForm
+        context["user"] = user
+        context["userProfile"] = userProfile
+        context["likedTracks"] = userProfile.userLikes.all()
+        context["dislikedTracks"] = userProfile.userDisLikes.all()
+        
+        return render(request,'spotiview/profile.html',context=context)
+
 
 
 
