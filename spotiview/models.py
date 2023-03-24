@@ -79,6 +79,7 @@ class Comment(models.Model):
     UserID = models.ForeignKey(UserClass, on_delete=models.CASCADE)
     comment = models.TextField(max_length=MAX_LENGTH)
     DateTime = models.DateTimeField(default=timezone.now)
+    
     class Meta:
         verbose_name_plural = 'comments'
 
